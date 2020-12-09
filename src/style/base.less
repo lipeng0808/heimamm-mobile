@@ -1,1 +1,6 @@
-@color:red;
+// 使用rem定义相应的属性
+.rem(@key,@value) {
+  @{key}: 1rem * @value / 75;
+}
+// 定义一个公共的边距
+@p15: 15px;

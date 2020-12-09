@@ -10,6 +10,7 @@ import 'amfe-flexible'
 import 'normalize.css'
 // 导入字体图标iconfont
 import '@/assets/iconfont/iconfont.css'
+import '@/style/main.css'
 // 导入vant样式
 import 'vant/lib/index.css'
 // 使用 vant
