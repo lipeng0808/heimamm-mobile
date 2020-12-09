@@ -1,5 +1,5 @@
 // 导包
-// 自动给css添加前缀
+// 自动给css添加前缀,兼容浏览器
 const autoprefixer = require('autoprefixer')
 // 导包
 // 将css转成rem
