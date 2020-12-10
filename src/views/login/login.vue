@@ -111,8 +111,13 @@ export default {
         .then(() => {
           auLogin(this.form)
             .then(res => {
+              console.log(res)
               // 保存token
               setLocal('token', res.data.jwt)
+              // 保存用户信息
+              this.$store.commit('getUserInfo', res.data.user)
+              // 保存登陆状态
+              this.$store.commit('getStatus', true)
             })
             .catch(err => {
               console.log(err)
