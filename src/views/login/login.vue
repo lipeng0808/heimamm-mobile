@@ -25,10 +25,10 @@
             <i class="iconfont">&#xe60c;</i>
           </template>
           <template #button>
-            <span class="code" @click="getCode" v-if="time === 30">
+            <span class="code" @click="getCode" v-if="totalTime === 30">
               获取验证码
             </span>
-            <span class="code" v-else>{{ time }}S后重试</span>
+            <span class="code" v-else>{{ totalTime }}S后重试</span>
           </template>
         </van-field>
         <div class="tip">
@@ -48,11 +48,11 @@ import { auCode, auLogin } from '@/api/login.js'
 export default {
   data () {
     return {
-      time: 30, // 时间
       form: {
         mobile: '',
         code: ''
       },
+      totalTime: 30, // 时间
       rules: {
         mobile: [
           { required: true, message: '请输入手机号', trigger: 'onBlur' },
@@ -77,14 +77,14 @@ export default {
         .validate('mobile')
         .then(() => {
           // 倒计时处理
-          this.time--
+          this.totalTime--
           const timeout = setInterval(() => {
-            this.time--
-            if (this.time <= 0) {
+            this.totalTime--
+            if (this.totalTime <= 0) {
               // 清除定时器
               clearInterval(timeout)
               // 还原事件
-              this.time = 30
+              this.totalTime = 30
             }
           }, 1000)
 
