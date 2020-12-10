@@ -5,7 +5,7 @@
         <i class="iconfont left">&#xe637;</i>
       </template>
     </van-nav-bar>
-    <div class="conter">
+    <div class="content">
       <h3 class="title">你好, 请登录</h3>
       <van-form ref="form">
         <van-field
@@ -25,7 +25,10 @@
             <i class="iconfont">&#xe60c;</i>
           </template>
           <template #button>
-            <span class="code" @click="getCode">获取验证码</span>
+            <span class="code" @click="getCode" v-if="time === 30">
+              获取验证码
+            </span>
+            <span class="code" v-else>{{ time }}S后重新发送</span>
           </template>
         </van-field>
         <div class="tip">
@@ -40,16 +43,28 @@
 </template>
 
 <script>
+// 导入axios请求方法
+import { auCode, auLogin } from '@/api/login.js'
 export default {
   data () {
     return {
+      time: 30, // 时间
       form: {
         mobile: '',
         code: ''
       },
       rules: {
         mobile: [
-          { required: true, message: '手机号不合法', trigger: 'onBlur' }
+          { required: true, message: '请输入手机号', trigger: 'onBlur' },
+          {
+            validator: valid => {
+              return /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/.test(
+                valid
+              )
+            },
+            message: '手机号不合法',
+            trigger: 'onblur'
+          }
         ],
         code: [{ required: true, message: '请输入验证码', trigger: 'onBlur' }]
       }
@@ -57,15 +72,57 @@ export default {
   },
   methods: {
     // 获取验证码
-    getCode () {},
+    getCode () {
+      this.$refs.form
+        .validate('mobile')
+        .then(() => {
+          // 使用传进来的login.js模块
+          auCode({ mobile: this.form.mobile })
+            .then(res => {
+              console.log(res)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        })
+        .catch(() => {
+          this.$toast.fail('验证失败')
+        })
+    },
     // 点击登录
-    submit () {}
+    submit () {
+      this.$refs.form
+        .validate()
+        .then(() => {
+          auLogin({ data: this.form })
+            .then(res => {
+              console.log(res)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        })
+        .catch(() => {
+          this.$toast.fail('登录失败')
+        })
+    }
   }
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
+// scoped: 只管当前页面和子组件的最外层()
+//   原理: 加了scoped,会自动添加一些属性选择器,所以只能设置有属性选择器的样式
+//   解决: 在需要修改的css属性前面加上 ::v-deep  例: ::v-deep .left{}
 .login {
+  // 使用 ::v-deep 处理
+  ::v-deep .van-nav-bar__left {
+    padding: 0;
+  }
+  .van-nav-bar {
+    background: #ffffff;
+    box-shadow: 0px 2px 4px 0px rgba(24, 26, 57, 0.04);
+  }
   .left {
     font-size: 44px;
     color: #181a39;
@@ -80,7 +137,7 @@ export default {
     line-height: 25px;
     letter-spacing: 0px;
   }
-  .conter {
+  .content {
     padding: 0 @p15;
 
     .code {
@@ -107,4 +164,11 @@ export default {
     }
   }
 }
+</style>
+//
+<style lang="less">
+// .van-nav-bar__left {
+//   padding: 0;
+// }
+//
 </style>

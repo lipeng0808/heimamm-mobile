@@ -6,6 +6,6 @@
 }
 body,
 html,
-.app {
+#app {
   height: 100%;
 }
