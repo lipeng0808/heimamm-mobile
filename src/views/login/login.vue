@@ -45,6 +45,8 @@
 <script>
 // 导入axios请求方法
 import { auCode, auLogin } from '@/api/login.js'
+// 导入处理token的js文件
+import { setLocal } from '@/utils/local.js'
 export default {
   data () {
     return {
@@ -88,10 +90,11 @@ export default {
             }
           }, 1000)
 
-          // 使用传进来的login.js模块
+          // 使用传进来的login.js模块中的auCode()方法
           auCode({ mobile: this.form.mobile })
             .then(res => {
-              console.log(res)
+              this.$toast.success(res.data)
+              this.form.code = res.data
             })
             .catch(err => {
               console.log(err)
@@ -106,9 +109,10 @@ export default {
       this.$refs.form
         .validate()
         .then(() => {
-          auLogin({ data: this.form })
+          auLogin(this.form)
             .then(res => {
-              console.log(res)
+              // 保存token
+              setLocal('token', res.data.jwt)
             })
             .catch(err => {
               console.log(err)

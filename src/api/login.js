@@ -7,7 +7,7 @@ function auCode (data) {
   return _fetch({
     url: '/au/code',
     method: 'post',
-    data: data
+    data
   })
 }
 // 登陆请求
@@ -15,7 +15,7 @@ function auLogin (data) {
   return _fetch({
     url: '/au/login',
     method: 'post',
-    data: data
+    data
   })
 }
 // 将方法导出
