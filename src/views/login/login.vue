@@ -28,7 +28,7 @@
             <span class="code" @click="getCode" v-if="time === 30">
               获取验证码
             </span>
-            <span class="code" v-else>{{ time }}S后重新发送</span>
+            <span class="code" v-else>{{ time }}S后重试</span>
           </template>
         </van-field>
         <div class="tip">
@@ -76,6 +76,18 @@ export default {
       this.$refs.form
         .validate('mobile')
         .then(() => {
+          // 倒计时处理
+          this.time--
+          const timeout = setInterval(() => {
+            this.time--
+            if (this.time <= 0) {
+              // 清除定时器
+              clearInterval(timeout)
+              // 还原事件
+              this.time = 30
+            }
+          }, 1000)
+
           // 使用传进来的login.js模块
           auCode({ mobile: this.form.mobile })
             .then(res => {
