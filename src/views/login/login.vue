@@ -48,6 +48,7 @@ import { auCode, auLogin } from '@/api/login.js'
 // 导入处理token的js文件
 import { setLocal } from '@/utils/local.js'
 export default {
+  name: 'Login',
   data () {
     return {
       form: {
@@ -89,7 +90,10 @@ export default {
               this.totalTime = 30
             }
           }, 1000)
-
+          // 轻提示
+          this.$toast.loading({
+            duration: 0
+          })
           // 使用传进来的login.js模块中的auCode()方法
           auCode({ mobile: this.form.mobile })
             .then(res => {
@@ -118,13 +122,15 @@ export default {
               this.$store.commit('getUserInfo', res.data.user)
               // 保存登陆状态
               this.$store.commit('getStatus', true)
+              // 页面跳转
+              this.$router.push('/home')
             })
             .catch(err => {
               console.log(err)
             })
         })
         .catch(() => {
-          this.$toast.fail('登录失败')
+          this.$toast.fail('验证失败')
         })
     }
   }
