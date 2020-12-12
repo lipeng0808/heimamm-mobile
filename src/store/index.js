@@ -10,11 +10,11 @@ export default new Vuex.Store({
   },
   mutations: {
     // 存储用户信息
-    getUserInfo (state, value) {
+    setUserInfo (state, value) {
       state.userInfo = value
     },
     // 存储登陆状态信息
-    getStatus (state, value) {
+    setStatus (state, value) {
       state.isLogin = value
     }
   },

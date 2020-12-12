@@ -46,7 +46,7 @@
 // 导入axios请求方法
 import { auCode, auLogin } from '@/api/login.js'
 // 导入处理token的js文件
-import { setLocal } from '@/utils/local.js'
+import { setLocal, getLocal } from '@/utils/local.js'
 export default {
   name: 'Login',
   data () {
@@ -115,13 +115,13 @@ export default {
         .then(() => {
           auLogin(this.form)
             .then(res => {
-              console.log(res)
+              // console.log(res)
               // 保存token
               setLocal('token', res.data.jwt)
               // 保存用户信息
-              this.$store.commit('getUserInfo', res.data.user)
+              this.$store.commit('setUserInfo', res.data.user)
               // 保存登陆状态
-              this.$store.commit('getStatus', true)
+              this.$store.commit('setStatus', true)
               // 页面跳转
               this.$router.push('/home')
             })
@@ -132,6 +132,11 @@ export default {
         .catch(() => {
           this.$toast.fail('验证失败')
         })
+    }
+  },
+  created () {
+    if (getLocal('token')) {
+      this.$router.push('/home')
     }
   }
 }

@@ -8,8 +8,15 @@
       route: 路由模式
       replace: 路由跳转是否覆盖当前页 默认false
       路由模式下,可以不写 v-model
+      placeholder: 生成一个等高的占位空间
      -->
-    <van-tabbar class="tip" active-color="red" inactive-color="#b4b4bd" route>
+    <van-tabbar
+      class="tip"
+      active-color="red"
+      inactive-color="#b4b4bd"
+      route
+      placeholder
+    >
       <van-tabbar-item replace to="/home/company">
         <template #icon>
           <i class="iconfont">&#xe63d;</i>
@@ -50,12 +57,12 @@ export default {
 <style lang="less" scoped>
 .tip {
   width: 375px;
-  height: 88px;
+  height: 60px;
   background: #fcfcfc;
   border: 1px solid #edebeb;
-  .van-tabbar-item {
-    margin-bottom: 38px;
-  }
+  // .van-tabbar-item {
+  //   margin-bottom: 38px;
+  // }
   .iconfont {
     font-size: 29px;
   }
