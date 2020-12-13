@@ -8,7 +8,7 @@
         </div>
         <div class="right" @click="goInfo">
           <img v-if="userInfo.avatar" :src="baseURL + userInfo.avatar" />
-          <img v-else src="@/assets/logo.png" alt="" />
+          <img v-else src="@/assets/06.jpg" alt="" />
         </div>
       </div>
       <div class="top-item">
@@ -118,10 +118,13 @@ export default {
     goInfo () {
       this.$router.push('/home/myInfo')
     }
+  },
+  mounted () {
+    document.querySelector('body').style.backgroundColor = '#f7f4f5'
+  },
+  beforeDestroy () {
+    document.querySelector('body').style.backgroundColor = '#fff'
   }
-  // created () {
-  //   console.log(this.userInfo)
-  // }
 }
 </script>
 

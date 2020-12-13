@@ -17,7 +17,19 @@
       <i class="iconfont" v-html="icon"></i>
     </template>
     <template>
-      <div class="post">
+      <img
+        class="img"
+        v-if="type === 'img' && value"
+        :src="baseUrl + value"
+        alt=""
+      />
+      <img
+        class="img"
+        v-else-if="type === 'img' && !value"
+        src="@/assets/06.jpg"
+        alt=""
+      />
+      <div v-else class="value">
         {{ value }}
       </div>
     </template>
@@ -26,7 +38,13 @@
 
 <script>
 export default {
-  props: ['title', 'icon', 'value']
+  name: 'myCell',
+  props: ['title', 'icon', 'value', 'type'],
+  data () {
+    return {
+      baseUrl: process.env.VUE_APP_URL
+    }
+  }
 }
 </script>
 <style lang="less" scoped>
@@ -41,7 +59,7 @@ export default {
     letter-spacing: 0px;
     padding-left: 12px;
   }
-  .post {
+  .value {
     font-size: 14px;
     font-family: PingFangSC, PingFangSC-Regular;
     font-weight: 400;
@@ -49,6 +67,11 @@ export default {
     color: #5b5d75;
     line-height: 20px;
     letter-spacing: 0px;
+  }
+  .img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
   }
 }
 </style>

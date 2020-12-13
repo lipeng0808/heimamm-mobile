@@ -156,7 +156,19 @@ export default {
 .login {
   .content {
     padding: 0 @p15;
-
+    .title {
+      font-size: 18px;
+      font-family: PingFangSC, PingFangSC-Semibold;
+      font-weight: 600;
+      text-align: left;
+      color: #222222;
+      line-height: 25px;
+      letter-spacing: 0px;
+      padding-top: 50px;
+    }
+    .van-form {
+      margin-top: 63px;
+    }
     .code {
       font-size: 16px;
       font-family: PingFangSC, PingFangSC-Regular;
