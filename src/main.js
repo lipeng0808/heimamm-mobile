@@ -13,6 +13,9 @@ import '@/assets/iconfont/iconfont.css'
 import '@/style/main.css'
 // 导入vant样式
 import 'vant/lib/index.css'
+// 注册全局组件--头部导航栏: van-nav-bar
+import hmNavBar from '@/components/hmNavBar'
+Vue.component(hmNavBar.name, hmNavBar)
 // 使用 vant
 Vue.use(Vant)
 

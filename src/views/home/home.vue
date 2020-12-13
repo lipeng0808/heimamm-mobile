@@ -11,6 +11,7 @@
       placeholder: 生成一个等高的占位空间
      -->
     <van-tabbar
+      v-if="$route.meta.needTab"
       class="tip"
       active-color="red"
       inactive-color="#b4b4bd"
@@ -54,20 +55,4 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.tip {
-  width: 375px;
-  height: 60px;
-  background: #fcfcfc;
-  border: 1px solid #edebeb;
-  // .van-tabbar-item {
-  //   margin-bottom: 38px;
-  // }
-  .iconfont {
-    font-size: 29px;
-  }
-  .title {
-    font-size: 14px;
-  }
-}
-</style>
+<style lang="less" scoped></style>

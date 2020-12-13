@@ -6,7 +6,7 @@
           <h3 class="name">{{ userInfo.nickname }}</h3>
           <span>{{ userInfo.intro }}</span>
         </div>
-        <div class="right">
+        <div class="right" @click="goInfo">
           <img v-if="userInfo.avatar" :src="baseURL + userInfo.avatar" />
           <img v-else src="@/assets/logo.png" alt="" />
         </div>
@@ -113,6 +113,11 @@ export default {
   // 计算属性
   computed: {
     ...mapState(['userInfo', 'isLogin'])
+  },
+  methods: {
+    goInfo () {
+      this.$router.push('/home/myInfo')
+    }
   }
   // created () {
   //   console.log(this.userInfo)
@@ -209,6 +214,7 @@ export default {
   .content {
     padding: 27px @p15 0;
     background-color: #f7f4f5;
+    margin-bottom: 10px;
 
     .middle {
       background-color: #fff;
@@ -261,9 +267,9 @@ export default {
         }
       }
     }
-  }
-  .bottom {
-    margin-top: 10px;
+    .bottom {
+      margin: 10px 0;
+    }
   }
 }
 </style>

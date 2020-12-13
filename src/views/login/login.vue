@@ -1,10 +1,11 @@
 <template>
   <div class="login">
-    <van-nav-bar>
+    <!-- <van-nav-bar @click-left="$router.push('/home/found')">
       <template #left>
         <i class="iconfont left">&#xe637;</i>
       </template>
-    </van-nav-bar>
+    </van-nav-bar> -->
+    <hmNavBar path="/home/found" />
     <div class="content">
       <h3 class="title">你好, 请登录</h3>
       <van-form ref="form">
@@ -117,13 +118,19 @@ export default {
             .then(res => {
               // console.log(res)
               // 保存token
-              setLocal('token', res.data.jwt)
+              setLocal(res.data.jwt)
               // 保存用户信息
               this.$store.commit('setUserInfo', res.data.user)
               // 保存登陆状态
               this.$store.commit('setStatus', true)
               // 页面跳转
-              this.$router.push('/home')
+              // 设置从那个页面进入的登录页,登录成功后去到那个页面
+              const _redirect = this.$route.query.redirect
+              if (_redirect) {
+                this.$router.push(_redirect)
+              } else {
+                this.$router.push('/home')
+              }
             })
             .catch(err => {
               console.log(err)
@@ -135,7 +142,7 @@ export default {
     }
   },
   created () {
-    if (getLocal('token')) {
+    if (getLocal()) {
       this.$router.push('/home')
     }
   }
@@ -147,28 +154,6 @@ export default {
 //   原理: 加了scoped,会自动添加一些属性选择器,所以只能设置有属性选择器的样式
 //   解决: 在需要修改的css属性前面加上 ::v-deep  例: ::v-deep .left{}
 .login {
-  // 使用 ::v-deep 处理
-  ::v-deep .van-nav-bar__left {
-    padding: 0;
-  }
-  .van-nav-bar {
-    background: #ffffff;
-    box-shadow: 0px 2px 4px 0px rgba(24, 26, 57, 0.04);
-  }
-  .left {
-    font-size: 44px;
-    color: #181a39;
-  }
-  .title {
-    margin: 50px 0 63px;
-    font-size: 18px;
-    font-family: PingFangSC, PingFangSC-Semibold;
-    font-weight: 600;
-    text-align: left;
-    color: #222222;
-    line-height: 25px;
-    letter-spacing: 0px;
-  }
   .content {
     padding: 0 @p15;
 

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-import { getLocal } from '@/utils/local.js'
-import { auInfo } from '@/api/user.js'
+import { getLocal } from '../utils/local'
+import { auInfo } from '../api/user'
 
 Vue.use(VueRouter)
 
@@ -16,22 +16,37 @@ const routes = [
     children: [
       {
         path: '/home/company',
-        component: () => import('@/views/home/company/company.vue')
+        component: () => import('@/views/home/company/company.vue'),
+        meta: {
+          needTab: true
+        }
       },
       {
         path: '/home/found',
-        component: () => import('@/views/home/found/found.vue')
+        component: () => import('@/views/home/found/found.vue'),
+        meta: {
+          needTab: true
+        }
       },
       {
         path: '/home/question',
         component: () => import('@/views/home/question/question.vue'),
         meta: {
-          needLogin: true
+          needLogin: true,
+          needTab: true
         }
       },
       {
         path: '/home/user',
         component: () => import('@/views/home/user/user.vue'),
+        meta: {
+          needLogin: true,
+          needTab: true
+        }
+      },
+      {
+        path: '/home/myInfo',
+        component: () => import('@/views/home/user/myInfo.vue'),
         meta: {
           needLogin: true
         }
@@ -43,29 +58,43 @@ const routes = [
 const router = new VueRouter({
   routes
 })
-// 导航守卫
+// 前置导航守卫
+
 router.beforeEach((to, from, next) => {
+  // 判断是否需要登录,在路由元设置一个参数needLogin判断
   if (!to.meta.needLogin) {
+    // 不需要登录的页面,直接通过
     next()
   } else {
-    // store === this.$store
+    // 需要登录的页面,判断是否已经登录,如果已经登录,直接通过
     if (store.state.isLogin) {
       next()
     } else {
-      if (!getLocal('token')) {
-        next('/login')
+      // 如果没有登录,判断是否有token,如果存在token
+      if (getLocal()) {
+        // 获取用户信息
+        auInfo()
+          .then(res => {
+            // 保存用户信息到vuex
+            store.commit('setUserInfo', res.data)
+            // 保存登录状态
+            store.commit('setStatus', true)
+            // 通过
+            next()
+          })
+          .catch(() => {})
       } else {
-        auInfo().then(res => {
-          window.console.log('导航守卫获取用户信息:', res)
-          // 存储用户信息
-          store.commit('setUserInfo', res.data)
-          // 设置登陆状态为true
-          store.commit('setStatus', true)
-          next()
-        })
+        // 设置从哪里来,登录后回到那里去
+        // 通过路由传参
+        next('/login?redirect=' + to.fullPath)
       }
     }
   }
 })
 
+// 路由跳转时的问题
+const originalPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push (location) {
+  return originalPush.call(this, location).catch(err => err)
+}
 export default router
