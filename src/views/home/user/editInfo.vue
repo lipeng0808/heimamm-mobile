@@ -47,11 +47,7 @@ export default {
         .then(() => {
           this.$toast.success('修改成功')
           //  修改成功后,跳转到相应的页面
-          if (this.type === 'position') {
-            this.$router.push('/home/user')
-          } else {
-            this.$router.push('/home/myInfo')
-          }
+          this.$router.push(this.path)
           this.$store.dispatch('revise')
         })
         .catch(() => {})
