@@ -2,7 +2,7 @@
   <van-nav-bar
     class="hmNavBar"
     @click-left="$router.push(path)"
-    :right-text="right"
+    @click-right="clickEven"
   >
     <template #left>
       <i class="iconfont left">&#xe637;</i>
@@ -12,13 +12,23 @@
         {{ title }}
       </div>
     </template>
+    <template #right>
+      <div class="right">
+        {{ right }}
+      </div>
+    </template>
   </van-nav-bar>
 </template>
 
 <script>
 export default {
   name: 'hmNavBar',
-  props: ['title', 'path', 'right']
+  props: ['title', 'path', 'right'],
+  methods: {
+    clickEven () {
+      this.$emit('clickRight')
+    }
+  }
 }
 </script>
 
@@ -43,6 +53,15 @@ export default {
     text-align: left;
     color: #222222;
     line-height: 25px;
+    letter-spacing: 0px;
+  }
+  .right {
+    font-size: 14px;
+    font-family: PingFangSC, PingFangSC-Regular;
+    font-weight: 400;
+    text-align: right;
+    color: #181a39;
+    line-height: 20px;
     letter-spacing: 0px;
   }
 }

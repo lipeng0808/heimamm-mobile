@@ -37,6 +37,7 @@
           title="我的岗位"
           :value="userInfo.position"
           icon="&#xe64d;"
+          @click.native="edit('position')"
         />
       </div>
     </div>
@@ -117,6 +118,9 @@ export default {
   methods: {
     goInfo () {
       this.$router.push('/home/myInfo')
+    },
+    edit (str) {
+      this.$router.push('/home/editInfo?type=' + str)
     }
   },
   mounted () {
