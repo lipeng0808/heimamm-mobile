@@ -50,6 +50,13 @@ const routes = [
         meta: {
           needLogin: true
         }
+      },
+      {
+        path: '/home/editInfo',
+        component: () => import('@/views/home/user/editInfo.vue'),
+        meta: {
+          needLogin: true
+        }
       }
     ]
   }

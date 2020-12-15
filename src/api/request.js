@@ -35,7 +35,7 @@ _fetch.interceptors.request.use(
 _fetch.interceptors.response.use(
   function (res) {
     if (res.data.code === 200) {
-      Toast.fail(res.data.message)
+      // Toast.fail(res.data.message)
       return res.data
     } else if (res.data.code === 401 || res.data.code === 403) {
       // 提示错误

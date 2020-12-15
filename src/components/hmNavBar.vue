@@ -1,5 +1,9 @@
 <template>
-  <van-nav-bar class="hmNavBar" @click-left="$router.push(path)">
+  <van-nav-bar
+    class="hmNavBar"
+    @click-left="$router.push(path)"
+    :right-text="right"
+  >
     <template #left>
       <i class="iconfont left">&#xe637;</i>
     </template>
@@ -14,7 +18,7 @@
 <script>
 export default {
   name: 'hmNavBar',
-  props: ['title', 'path']
+  props: ['title', 'path', 'right']
 }
 </script>
 

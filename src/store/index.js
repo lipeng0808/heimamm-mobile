@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { auInfo } from '@/api/user'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   state: {
     userInfo: '', // 用户信息
     isLogin: false // 登陆状态
@@ -18,6 +19,17 @@ export default new Vuex.Store({
       state.isLogin = value
     }
   },
-  actions: {},
+  actions: {
+    // 更新用户信息
+    revise (store) {
+      auInfo()
+        .then(res => {
+          store.commit('setUserInfo', res.data)
+          store.commit('setStatus', true)
+        })
+        .catch(() => {})
+    }
+  },
   modules: {}
 })
+export default store
