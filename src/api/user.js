@@ -18,6 +18,15 @@ function auEdit (data) {
     data
   })
 }
+// 上传文件
+function upload (data) {
+  return _fetch({
+    url: '/upload',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
 
 // 将方法导出
-export { auInfo, auEdit }
+export { auInfo, auEdit, upload }

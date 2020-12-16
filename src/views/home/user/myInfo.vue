@@ -2,7 +2,13 @@
   <div class="myInfo">
     <hm-nav-bar title="我的资料" path="/home/user" />
     <div class="content">
-      <my-cell class="title" title="头像" :value="userInfo.avatar" type="img" />
+      <my-cell
+        class="title"
+        title="头像"
+        :value="userInfo.avatar"
+        type="img"
+        @click.native="edit('avatar')"
+      />
       <my-cell
         class="nickname"
         title="昵称"
