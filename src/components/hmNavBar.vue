@@ -5,7 +5,7 @@
     @click-right="clickEven"
   >
     <template #left>
-      <i class="iconfont left">&#xe637;</i>
+      <i class="iconfont left" v-html="icon">{{ icon }}</i>
     </template>
     <template #title>
       <div class="title">
@@ -23,7 +23,22 @@
 <script>
 export default {
   name: 'hmNavBar',
-  props: ['title', 'path', 'right'],
+  // props: ['title', 'path', 'right'],
+  props: {
+    title: {
+      type: String
+    },
+    path: {
+      type: String
+    },
+    right: {
+      type: String
+    },
+    icon: {
+      type: String,
+      default: '&#xe637;'
+    }
+  },
   methods: {
     clickEven () {
       this.$emit('clickRight')

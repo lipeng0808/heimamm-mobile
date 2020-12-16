@@ -37,6 +37,7 @@
     <!-- 性别弹框 -->
     <van-popup v-model="show" position="bottom">
       <van-picker
+        v-if="show"
         title="性别"
         show-toolbar
         :default-index="userInfo.gender"
@@ -48,6 +49,7 @@
     <!-- 地区弹框 -->
     <van-popup v-model="showArea" position="bottom">
       <van-area
+        v-if="showArea"
         title="地区选择"
         :area-list="area"
         :value="userInfo.area"
@@ -143,7 +145,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .content {
   padding: 18px @p15;
   background-color: #f7f4f5;
