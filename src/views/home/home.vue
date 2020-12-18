@@ -1,7 +1,13 @@
 <template>
   <div class="home">
     <!-- 路由出口 -->
-    <router-view></router-view>
+    <!-- keep-alive:  缓存组件
+         name="name值"
+         include属性: 设置指定组件缓存
+     -->
+    <keep-alive include="found">
+      <router-view></router-view>
+    </keep-alive>
     <!--
       active-colo: 字体颜色
       inactive-color: 图标颜色

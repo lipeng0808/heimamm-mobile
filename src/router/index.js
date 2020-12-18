@@ -29,6 +29,11 @@ const routes = [
         }
       },
       {
+        path: '/home/shareList',
+        component: () => import('@/views/home/found/shareList.vue'),
+        meta: {}
+      },
+      {
         path: '/home/question',
         component: () => import('@/views/home/question/question.vue'),
         meta: {
@@ -68,6 +73,8 @@ const router = new VueRouter({
 // 前置导航守卫
 
 router.beforeEach((to, from, next) => {
+  // 页面切换时,取消所有接口调用
+  window.cancelAxios('', true)
   // 判断是否需要登录,在路由元设置一个参数needLogin判断
   if (!to.meta.needLogin) {
     // 不需要登录的页面,直接通过

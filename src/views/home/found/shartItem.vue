@@ -76,10 +76,17 @@ export default {
     }
     .item-name {
       flex: 1;
-      margin-left: 10px;
+      margin-left: 8px;
+      font-size: 12px;
+      font-family: PingFangSC, PingFangSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: #545671;
+      line-height: 17px;
+      letter-spacing: 0px;
     }
     .item-time {
-      margin-right: 25px;
+      margin-right: 20px;
     }
     .item-read {
       margin-right: 23px;

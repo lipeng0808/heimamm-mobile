@@ -1,7 +1,9 @@
-import _fetch from './request'
+import _ajax from './request'
+// import axios from 'axios'
+// let _cancel = ''
 // 面试技巧数据
 function technic (params) {
-  return _fetch({
+  return _ajax({
     url: '/articles/technic',
     method: 'get',
     params
@@ -10,15 +12,23 @@ function technic (params) {
 
 // 获取热门职业数据
 function chartDataHot () {
-  return _fetch({
+  return _ajax({
     url: '/chart-data/hot'
   })
 }
 // 面经分享数据
 function articleShare (params) {
-  return _fetch({
+  // 设置每次接口调用前,取消上一次的调用
+  // try {
+  //   _cancel()
+  // } catch {}
+  return _ajax({
     url: '/articles/share',
     params
+    // cancelToken: new axios.CancelToken(cancel => {
+    //   // cancel: 取消接口方法
+    //   _cancel = cancel
+    // })
   })
 }
 
