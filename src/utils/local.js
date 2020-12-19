@@ -1,26 +1,14 @@
-const key = 'token'
-
 // 存储token
-// function setLocal (key, value) {
-//   localStorage.setItem(key, value)
-// }
-const setLocal = token => {
-  localStorage.setItem(key, token)
+function setLocal (key, value) {
+  localStorage.setItem(key, value)
 }
-
 // 获取token
-// function getLocal (key) {
-//   return localStorage.getItem(key)
-// }
-const getLocal = () => {
+function getLocal (key) {
   return localStorage.getItem(key)
 }
 
 // 删除token
-// function rmLocal (key) {
-//   localStorage.removeItem(key)
-// }
-const rmLocal = () => {
+function rmLocal (key) {
   localStorage.removeItem(key)
 }
 // 导出

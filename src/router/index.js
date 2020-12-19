@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-import { getLocal } from '../utils/local'
-import { auInfo } from '../api/user'
+import { getLocal } from '@/utils/local'
+import { auInfo } from '@/api/user'
 
 Vue.use(VueRouter)
 
@@ -31,6 +31,12 @@ const routes = [
       {
         path: '/home/shareList',
         component: () => import('@/views/home/found/shareList.vue'),
+        meta: {}
+        // alias: '/home/shareList' // 只是定义一个路由别名,名字不同
+      },
+      {
+        path: '/home/shareInfo/:id?',
+        component: () => import('@/views/home/found/shareInfo.vue'),
         meta: {}
       },
       {
@@ -85,7 +91,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       // 如果没有登录,判断是否有token,如果存在token
-      if (getLocal()) {
+      if (getLocal('token')) {
         // 获取用户信息
         auInfo()
           .then(res => {

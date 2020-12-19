@@ -152,24 +152,19 @@ export default {
         // 刷新完成要将v-model的值变成false
         this.loading = false
       })
-      // // 面试技巧
-      // technic().then(res => {
-      //   this.technicList = res.data.list
-      // })
-      // // 市场数据
-      // chartDataHot().then(res => {
-      //   res.data.yearSalary.reverse()
-      //   this.chartDataObj = res.data
-      // })
-      // // 面经分享
-      // articleShare({ params: this.limit }).then(res => {
-      //   this.shareList = res.data.list
-      // })
     }
   },
   created () {
     // 调用下拉刷新方法获取数据
     this.refresh()
+    // bus方法兄弟组件间的调用
+    this.$bus.on('refresh', this.refresh())
+  },
+  activated () {
+    if (this.shareList === '') {
+      // 调用下拉刷新方法获取数据
+      this.refresh()
+    }
   }
 }
 </script>

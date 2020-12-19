@@ -96,7 +96,7 @@ export default {
         .then(() => {
           // 点击确定
           // 退出删除token
-          rmLocal()
+          rmLocal('token')
           // 修改登录状态信息
           this.$store.commit('setStatus', false)
           // 跳转到登录页

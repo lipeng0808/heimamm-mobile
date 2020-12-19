@@ -31,5 +31,30 @@ function articleShare (params) {
     // })
   })
 }
-
-export { technic, chartDataHot, articleShare }
+// 面经热搜
+function shareTopSearch () {
+  return _ajax({
+    url: '/articles/shareTopSearch'
+  })
+}
+// 面经详情
+function articlesShareId (id) {
+  return _ajax({
+    url: '/articles/share/' + id
+  })
+}
+// 面经评论
+function articlesCommentsId (id, params) {
+  return _ajax({
+    url: '/articles/comments/' + id,
+    params
+  })
+}
+export {
+  technic,
+  chartDataHot,
+  articleShare,
+  shareTopSearch,
+  articlesShareId,
+  articlesCommentsId
+}

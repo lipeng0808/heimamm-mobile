@@ -36,7 +36,7 @@ _fetch.interceptors.request.use(
     // 判断是否请求是否需要token
     // 给需要token的,请求头加上authorization,不需要的就别加
     if (config.needToken) {
-      config.headers.authorization = `Bearer ${getLocal()}`
+      config.headers.authorization = `Bearer ${getLocal('token')}`
     }
 
     // 调用中断请求方法
@@ -71,7 +71,7 @@ _fetch.interceptors.response.use(
       // 提示错误
       Toast.fail(res.data.message)
       // 删除token
-      rmLocal()
+      rmLocal('token')
       // 修改vuex中的登录状态
       store.commit('setStatus', false)
       // 跳转到登录页

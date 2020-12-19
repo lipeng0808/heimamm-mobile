@@ -118,7 +118,7 @@ export default {
             .then(res => {
               // console.log(res)
               // 保存token
-              setLocal(res.data.jwt)
+              setLocal('token', res.data.jwt)
               // 保存用户信息
               this.$store.commit('setUserInfo', res.data.user)
               // 保存登陆状态
@@ -142,7 +142,7 @@ export default {
     }
   },
   created () {
-    if (getLocal()) {
+    if (getLocal('token')) {
       this.$router.push('/home')
     }
   }

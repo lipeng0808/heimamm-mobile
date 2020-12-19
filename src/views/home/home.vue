@@ -36,7 +36,7 @@
         </template>
         <span class="title">刷题</span>
       </van-tabbar-item>
-      <van-tabbar-item replace to="/home/found">
+      <van-tabbar-item to="/home/found">
         <template #icon>
           <i class="iconfont">&#xe646;</i>
         </template>
@@ -55,6 +55,7 @@
 <script>
 export default {
   name: 'Home',
+
   data () {
     return {}
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="shartItem">
-    <h3 class="title">
-      {{ info.title }}
+    <h3 class="title" v-html="info.title" @click="goInfo">
+      <!-- {{ info.title }} -->
     </h3>
     <p class="text van-multi-ellipsis--l2">
       {{ info.content }}
@@ -27,7 +27,16 @@
 <script>
 export default {
   name: 'shartItem',
-  props: ['info']
+  props: ['info'],
+  methods: {
+    // 点击路由跳转
+    // 动态路由匹配传参
+    goInfo () {
+      this.$router.push(
+        '/home/shareInfo/' + this.info.id + '?path=' + this.$route.fullPath
+      )
+    }
+  }
 }
 </script>
 
