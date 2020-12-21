@@ -68,6 +68,7 @@ import shartItem from './shartItem'
 import { articleShare, shareTopSearch } from '@/api/found.js'
 import { setLocal, getLocal } from '@/utils/local'
 export default {
+  name: 'shareList',
   components: {
     shartItem
   },
@@ -161,6 +162,10 @@ export default {
       this.localList = []
       setLocal('history', JSON.stringify(this.localList))
     }
+  },
+  // 再次进入页面时,回到记录的滚动条位置
+  activated () {
+    window.scrollTo(0, this.$route.meta.scrollTop)
   }
 }
 </script>

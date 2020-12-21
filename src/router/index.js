@@ -81,6 +81,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   // 页面切换时,取消所有接口调用
   window.cancelAxios('', true)
+
+  // 记录离开页面时,滚动条的位置
+  const _scrollTop =
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    window.pageYOffset
+  from.meta.scrollTop = _scrollTop
+
   // 判断是否需要登录,在路由元设置一个参数needLogin判断
   if (!to.meta.needLogin) {
     // 不需要登录的页面,直接通过
@@ -110,6 +118,11 @@ router.beforeEach((to, from, next) => {
       }
     }
   }
+})
+// 后置守卫
+router.afterEach((to, from) => {
+  // 在进入页面后,回到滚动条顶部
+  window.scrollTo(0, 0)
 })
 
 // 路由跳转时的问题

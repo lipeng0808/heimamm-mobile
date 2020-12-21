@@ -5,7 +5,7 @@
          name="name值"
          include属性: 设置指定组件缓存
      -->
-    <keep-alive include="found">
+    <keep-alive include="found,shareList">
       <router-view></router-view>
     </keep-alive>
     <!--

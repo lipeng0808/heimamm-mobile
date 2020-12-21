@@ -160,6 +160,8 @@ export default {
   },
 
   activated () {
+    // 再次进入页面时,回到记录的滚动条位置
+    window.scrollTo(0, this.$route.meta.scrollTop)
     if (this.shareList === '') {
       // 调用下拉刷新方法获取数据
       this.refresh()
