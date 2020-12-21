@@ -55,13 +55,19 @@
         <div class="comment-bottom">
           <div class="bottom-up">{{ item.content }}</div>
           <div class="bottom-down" v-if="item.children_comments.length !== 0">
-            <p
-              class="txt-item"
-              v-for="(ele, idx) in item.children_comments"
-              :key="idx"
-            >
-              {{ ele.author }}：<span>{{ ele.content }}</span>
-            </p>
+            <div v-for="(ele, idx) in item.children_comments" :key="idx">
+              <p
+                v-if="ele.author === item.author.nickname"
+                class="txt-item"
+                @click="doComments(item)"
+              >
+                {{ ele.author }} ：<span>{{ ele.content }}</span>
+              </p>
+              <p v-else class="txt-item" @click="doComments(item)">
+                {{ ele.author }} 回复 {{ item.author.nickname }} ：
+                <span>{{ ele.content }}</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -133,13 +139,13 @@ export default {
       showComment: false, // 是否显示评论弹框
       inputText: '', // 弹框内容
       parent: '', // 评论id
-      parentObj: ''
+      parentObj: '',
+      eleObj: ''
     }
   },
   async created () {
     const res = await articlesShareId(this.id)
     this.info = res.data
-    console.log(res)
   },
   methods: {
     async load () {
@@ -165,7 +171,7 @@ export default {
         article: this.id,
         parent: this.parent
       })
-      if (this.parent !== '') {
+      if (this.parent !== '' && this.parentObj) {
         this.parentObj.children_comments.push(res.data)
       } else {
         // 添加star字段
@@ -176,7 +182,7 @@ export default {
       // 关闭窗口
       this.showComment = false
     },
-    // 回复评论
+    // 点击头像回复评论
     rmComment (item) {
       // 存储评论id
       this.parent = item.id
@@ -185,6 +191,12 @@ export default {
       // 打开窗口
       this.showComment = true
     },
+
+    // 点击评论回复评论
+    doComments (item) {
+      this.rmComment(item)
+    },
+
     // 文章收藏
     async collect () {
       const res = await articlesCollect({ id: this.id })
@@ -193,7 +205,6 @@ export default {
       } else {
         this.$toast.fail('取消收藏')
       }
-      console.log(res)
       // 更新收藏总数
       this.info.collect = res.data.num
       this.$store.dispatch('revise')
@@ -218,7 +229,6 @@ export default {
       } else {
         this.$toast.fail('取消点赞')
       }
-      console.log(res)
       // 更新点赞总数
       item.star = res.data.num
       this.$store.dispatch('revise')
