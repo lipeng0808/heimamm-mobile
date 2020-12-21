@@ -157,9 +157,8 @@ export default {
   created () {
     // 调用下拉刷新方法获取数据
     this.refresh()
-    // bus方法兄弟组件间的调用
-    this.$bus.on('refresh', this.refresh())
   },
+
   activated () {
     if (this.shareList === '') {
       // 调用下拉刷新方法获取数据

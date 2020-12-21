@@ -212,7 +212,6 @@ export default {
       bottom: -16px;
       width: 100%;
       padding: 0 @p15;
-
       .mycell {
         border-radius: 8px;
       }

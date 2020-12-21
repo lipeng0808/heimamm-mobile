@@ -30,8 +30,9 @@
             v-if="item.author.avatar"
             :src="$baseUrl + item.author.avatar"
             alt=""
+            @click="rmComment(item)"
           />
-          <img v-else src="@/assets/06.jpg" alt="" />
+          <img v-else src="@/assets/06.jpg" alt="" @click="rmComment(item)" />
           <div class="top-item">
             <h4 class="item-up">{{ item.author.nickname }}</h4>
             <p class="item-down">{{ item.created_at | formaTime }}</p>
@@ -55,7 +56,7 @@
     </van-list>
     <!-- 底部搜索栏 -->
     <div class="footer">
-      <div class="search">
+      <div class="search" @click="showComment = true">
         我来补充两句
       </div>
       <div class="item">
@@ -71,11 +72,28 @@
         <p class="num">367</p>
       </div>
     </div>
+    <!-- 发送评论弹框 -->
+    <van-popup v-model="showComment" position="bottom" class="commit-text">
+      <van-field
+        type="textarea"
+        placeholder="我来补充两句"
+        v-model="inputText"
+        rows="4"
+      />
+      <div class="sendComment">
+        <span v-if="inputText.trim() === ''" class="send">发送</span>
+        <span v-else class="send" style="color: red" @click="send">发送</span>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { articlesShareId, articlesCommentsId } from '@/api/found'
+import {
+  articlesShareId,
+  articlesCommentsId,
+  articlesComments
+} from '@/api/found'
 export default {
   data () {
     return {
@@ -86,14 +104,17 @@ export default {
       finished: false,
       currPage: 1,
       pageSize: 3,
-      list: [],
-      num: 0
+      list: [], // 评论数组
+      num: 0,
+      showComment: false, // 是否显示评论弹框
+      inputText: '', // 弹框内容
+      parent: '', // 评论id
+      parentObj: ''
     }
   },
   async created () {
     const res = await articlesShareId(this.id)
     this.info = res.data
-    console.log(res)
   },
   methods: {
     async load () {
@@ -110,6 +131,42 @@ export default {
       // 判断是否全部加载完成
       if (this.list.length >= res.data.total) {
         this.finished = true
+      }
+    },
+    // 发表评论
+    async send () {
+      const res = await articlesComments({
+        content: this.inputText,
+        article: this.id,
+        parent: this.parent
+      })
+      if (this.parent !== '') {
+        this.parentObj.children_comments.push(res.data)
+      } else {
+        // 添加star字段
+        res.data.star = 0
+        // 添加到评论数组
+        this.list.unshift(res.data)
+      }
+      // 关闭窗口
+      this.showComment = false
+    },
+    // 回复评论
+    rmComment (item) {
+      // 存储评论id
+      this.parent = item.id
+      // 存储对象
+      this.parentObj = item
+      // 打开窗口
+      this.showComment = true
+      console.log(item)
+    }
+  },
+  watch: {
+    showComment (newVal) {
+      if (!newVal) {
+        this.parent = ''
+        this.inputText = ''
       }
     }
   }
@@ -310,6 +367,25 @@ export default {
         font-weight: 400;
         text-align: center;
         line-height: 17px;
+        letter-spacing: 0px;
+      }
+    }
+  }
+  .commit-text {
+    padding: 25px 15px 20px;
+    .van-field {
+      background-color: #f7f4f5;
+    }
+    .sendComment {
+      text-align: right;
+      padding-top: 11px;
+      .send {
+        font-size: 16px;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: left;
+        color: #b4b4bd;
+        line-height: 23px;
         letter-spacing: 0px;
       }
     }

@@ -50,11 +50,21 @@ function articlesCommentsId (id, params) {
     params
   })
 }
+// 发表评论
+function articlesComments (data) {
+  return _ajax({
+    url: '/articles/comments',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
 export {
   technic,
   chartDataHot,
   articleShare,
   shareTopSearch,
   articlesShareId,
-  articlesCommentsId
+  articlesCommentsId,
+  articlesComments
 }
