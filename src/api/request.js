@@ -68,16 +68,21 @@ _fetch.interceptors.response.use(
       // Toast.fail(res.data.message)
       return res.data
     } else if (res.data.code === 401 || res.data.code === 403) {
-      // 提示错误
-      Toast.fail(res.data.message)
-      // 删除token
-      rmLocal('token')
-      // 修改vuex中的登录状态
-      store.commit('setStatus', false)
-      // 跳转到登录页
-      router.push('/login')
-      // 终止.then执行
-      return Promise.reject(new Error(res.data.message))
+      if (res.config.needError) {
+        // 终止.then执行
+        return Promise.reject(new Error('终止.then执行'))
+      } else {
+        // 提示错误
+        Toast.fail(res.data.message)
+        // 删除token
+        rmLocal('token')
+        // 修改vuex中的登录状态
+        store.commit('setStatus', false)
+        // 跳转到登录页
+        router.push('/login')
+        // 终止.then执行
+        return Promise.reject(new Error(res.data.message))
+      }
     } else {
       Toast.fail(res.data.message)
       // 终止.then的执行,直接跳转到.catch执行,抛出错误

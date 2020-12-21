@@ -37,8 +37,20 @@
             <h4 class="item-up">{{ item.author.nickname }}</h4>
             <p class="item-down">{{ item.created_at | formaTime }}</p>
           </div>
-          <span>{{ item.star }}</span>
-          <i class="iconfont">&#xe650;</i>
+          <span
+            class="item-star"
+            :class="{ red: gettersStar('starComments', +item.id) }"
+            @click="starComments(item)"
+          >
+            {{ item.star }}
+          </span>
+          <i
+            class="iconfont"
+            :class="{ red: gettersStar('starComments', +item.id) }"
+            @click="starComments(item)"
+          >
+            &#xe650;
+          </i>
         </div>
         <div class="comment-bottom">
           <div class="bottom-up">{{ item.content }}</div>
@@ -59,17 +71,25 @@
       <div class="search" @click="showComment = true">
         我来补充两句
       </div>
-      <div class="item">
+      <div
+        class="item"
+        :class="{ red: gettersStar('collectArticles', +id) }"
+        @click="collect"
+      >
         <p class="iconfont">&#xe63c;</p>
-        <p class="num">323</p>
+        <p class="num">{{ info.collect }}</p>
       </div>
-      <div class="item">
+      <div
+        class="item"
+        :class="{ red: gettersStar('starArticles', +id) }"
+        @click="star"
+      >
         <p class="iconfont">&#xe638;</p>
-        <p class="num">345</p>
+        <p class="num">{{ info.star }}</p>
       </div>
       <div class="item">
         <p class="iconfont">&#xe63e;</p>
-        <p class="num">367</p>
+        <p class="num">{{ info.share || 0 }}</p>
       </div>
     </div>
     <!-- 发送评论弹框 -->
@@ -89,10 +109,14 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 import {
   articlesShareId,
   articlesCommentsId,
-  articlesComments
+  articlesComments,
+  articlesCollect,
+  articlesStar,
+  commentsStar
 } from '@/api/found'
 export default {
   data () {
@@ -115,6 +139,7 @@ export default {
   async created () {
     const res = await articlesShareId(this.id)
     this.info = res.data
+    console.log(res)
   },
   methods: {
     async load () {
@@ -159,8 +184,49 @@ export default {
       this.parentObj = item
       // 打开窗口
       this.showComment = true
-      console.log(item)
+    },
+    // 文章收藏
+    async collect () {
+      const res = await articlesCollect({ id: this.id })
+      if (res.data.list.includes(+this.id)) {
+        this.$toast.success('收藏成功')
+      } else {
+        this.$toast.fail('取消收藏')
+      }
+      console.log(res)
+      // 更新收藏总数
+      this.info.collect = res.data.num
+      this.$store.dispatch('revise')
+    },
+    // 文章点赞
+    async star () {
+      const res = await articlesStar({ article: this.id })
+      if (res.data.list.includes(+this.id)) {
+        this.$toast.success('点赞成功')
+      } else {
+        this.$toast.fail('取消点赞')
+      }
+      // 更新点赞总数
+      this.info.star = res.data.num
+      this.$store.dispatch('revise')
+    },
+    // 评论点赞
+    async starComments (item) {
+      const res = await commentsStar({ id: item.id })
+      if (res.data.list.includes(+item.id)) {
+        this.$toast.success('点赞成功')
+      } else {
+        this.$toast.fail('取消点赞')
+      }
+      console.log(res)
+      // 更新点赞总数
+      item.star = res.data.num
+      this.$store.dispatch('revise')
     }
+  },
+  computed: {
+    ...mapState(['userInfo']),
+    ...mapGetters(['gettersStar'])
   },
   watch: {
     showComment (newVal) {
@@ -174,6 +240,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.red {
+  color: red !important ;
+}
 .shareInfo {
   .content {
     padding: 19px 15px;

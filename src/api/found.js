@@ -59,6 +59,33 @@ function articlesComments (data) {
     data
   })
 }
+// 面经收藏
+function articlesCollect (data) {
+  return _ajax({
+    url: '/articles/collect',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
+// 文章点赞
+function articlesStar (data) {
+  return _ajax({
+    url: '/articles/star',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
+// 评论点赞
+function commentsStar (data) {
+  return _ajax({
+    url: '/article-comments/star',
+    method: 'post',
+    needToken: true,
+    data
+  })
+}
 export {
   technic,
   chartDataHot,
@@ -66,5 +93,8 @@ export {
   shareTopSearch,
   articlesShareId,
   articlesCommentsId,
-  articlesComments
+  articlesComments,
+  articlesCollect,
+  articlesStar,
+  commentsStar
 }

@@ -1,11 +1,13 @@
 // 导入axios副本
 import _ajax from './request'
 // 获取用户信息
-function auInfo () {
+function auInfo (bol = false) {
   return _ajax({
     url: '/au/info',
     method: 'get',
-    needToken: true
+    needToken: true,
+    // 用于判断,在不需要登录页面获取用户信息,token异常时,不跳转到登录页
+    needError: bol
   })
 }
 

@@ -93,6 +93,15 @@ router.beforeEach((to, from, next) => {
   if (!to.meta.needLogin) {
     // 不需要登录的页面,直接通过
     next()
+    // 在不需要登录的页面,如果token存在且没有登录,也可以获取用户信息
+    if (getLocal('token') && !store.state.isLogin) {
+      auInfo(true).then(res => {
+        // 保存用户信息到vuex
+        store.commit('setUserInfo', res.data)
+        // 保存登录状态
+        store.commit('setStatus', true)
+      })
+    }
   } else {
     // 需要登录的页面,判断是否已经登录,如果已经登录,直接通过
     if (store.state.isLogin) {

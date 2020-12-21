@@ -30,6 +30,15 @@ const store = new Vuex.Store({
         .catch(() => {})
     }
   },
+  // vuex中的计算属性
+  // 应用场景: 监听(state)一个或多个的变化
+  getters: {
+    gettersStar (state) {
+      return (fn, id) => {
+        return state.userInfo[fn] && state.userInfo[fn].includes(id)
+      }
+    }
+  },
   modules: {}
 })
 export default store
